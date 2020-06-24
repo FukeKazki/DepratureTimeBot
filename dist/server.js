@@ -6,11 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const bot_sdk_1 = require("@line/bot-sdk");
 const crypto_1 = __importDefault(require("crypto"));
+const dotenv_1 = __importDefault(require("dotenv"));
 const scraping_1 = require("./scraping");
+dotenv_1.default.config();
 const app = express_1.default();
 const config = {
-    channelAccessToken: 'lXdpOCvf2aghIJcljmv6i4ZS3QTyv/sXvSTUwc4ojwFp2QPX4p9eEE7LC/tg6GrFsYkpqYVx0gqk8m3XUV64eK0Cbb8GHH3bPUDHa/9AcHjdR6F9QY5iDTKBUG6PAFOSJDaxht1ks2xPpSgZVIU+QQdB04t89/1O/w1cDnyilFU=',
-    channelSecret: 'afa11cc415f032d23309fc74455b081e',
+    channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
+    channelSecret: process.env.CHANNEL_SECRET,
 };
 const client = new bot_sdk_1.Client(config);
 const PORT = process.env.PORT || 3000;

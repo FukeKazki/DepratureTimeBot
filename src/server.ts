@@ -6,13 +6,16 @@ import {
 	ClientConfig,
 } from '@line/bot-sdk'
 import crypto from 'crypto'
+import dotenv from 'dotenv'
 import {getDepartureTimes} from './scraping'
+
+dotenv.config()
 
 const app = express()
 
 const config: MiddlewareConfig & ClientConfig = {
-	channelAccessToken: 'lXdpOCvf2aghIJcljmv6i4ZS3QTyv/sXvSTUwc4ojwFp2QPX4p9eEE7LC/tg6GrFsYkpqYVx0gqk8m3XUV64eK0Cbb8GHH3bPUDHa/9AcHjdR6F9QY5iDTKBUG6PAFOSJDaxht1ks2xPpSgZVIU+QQdB04t89/1O/w1cDnyilFU=',
-	channelSecret: 'afa11cc415f032d23309fc74455b081e',
+	channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN as string,
+	channelSecret: process.env.CHANNEL_SECRET as string,
 }
 
 const client = new Client(config)
