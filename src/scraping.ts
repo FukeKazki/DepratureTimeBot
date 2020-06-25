@@ -1,8 +1,11 @@
 import moment from 'moment'
+import 'moment-timezone'
 import cheerio from 'cheerio'
 import axios from 'axios'
 
-import {FlexContainer} from "@line/bot-sdk";
+import {FlexContainer} from "@line/bot-sdk"
+
+moment.tz.setDefault('Asia/Tokyo')
 
 interface url_parameter {
 	from: string
