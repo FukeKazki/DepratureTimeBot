@@ -1,11 +1,8 @@
 import moment from 'moment'
-import 'moment-timezone'
 import cheerio from 'cheerio'
 import axios from 'axios'
 
 import {FlexContainer} from "@line/bot-sdk"
-
-moment.tz.setDefault('Asia/Tokyo')
 
 interface url_parameter {
 	from: string
@@ -18,8 +15,8 @@ interface url_parameter {
 	m1: string
 }
 
-const setTemplate = (headerText: string, bodyTexts: Array<{hatu: string, tyaku: string}>, parameter: url_parameter, url: string): FlexContainer => {
-	return {
+const setTemplate = (headerText: string, bodyTexts: Array<{ hatu: string, tyaku: string }>, parameter: url_parameter, url: string): FlexContainer => {
+	const template: FlexContainer = {
 		"type": "bubble",
 		"header": {
 			"type": "box",
@@ -102,139 +99,6 @@ const setTemplate = (headerText: string, bodyTexts: Array<{hatu: string, tyaku: 
 					],
 					"paddingBottom": "10px"
 				},
-				bodyTexts[1] && (
-					{
-						"type": "separator"
-					}
-				),
-				bodyTexts[1] && (
-					{
-						"type": "box",
-						"layout": "vertical",
-						"contents": [
-							{
-								"type": "box",
-								"layout": "vertical",
-								"margin": "lg",
-								"spacing": "sm",
-								"contents": [
-									{
-										"type": "box",
-										"layout": "baseline",
-										"spacing": "sm",
-										"contents": [
-											{
-												"type": "text",
-												"text": "発",
-												"color": "#ff0000",
-												"size": "md",
-												"flex": 1
-											},
-											{
-												"type": "text",
-												"text": `${bodyTexts[1].hatu}`,
-												"wrap": true,
-												"color": "#666666",
-												"size": "sm",
-												"flex": 5
-											}
-										]
-									},
-									{
-										"type": "box",
-										"layout": "baseline",
-										"spacing": "sm",
-										"contents": [
-											{
-												"type": "text",
-												"text": "着",
-												"color": "#00ff00",
-												"size": "md",
-												"flex": 1
-											},
-											{
-												"type": "text",
-												"text": `${bodyTexts[1].tyaku}`,
-												"wrap": true,
-												"color": "#666666",
-												"size": "sm",
-												"flex": 5
-											}
-										]
-									}
-								]
-							}
-						],
-						"paddingTop": "10px",
-						"paddingBottom": "10px",
-					}
-				),
-				bodyTexts[2] && (
-					{
-						"type": "separator"
-					}
-				),
-				bodyTexts[2] && (
-					{
-						"type": "box",
-						"layout": "vertical",
-						"contents": [
-							{
-								"type": "box",
-								"layout": "vertical",
-								"margin": "lg",
-								"spacing": "sm",
-								"contents": [
-									{
-										"type": "box",
-										"layout": "baseline",
-										"spacing": "sm",
-										"contents": [
-											{
-												"type": "text",
-												"text": "発",
-												"color": "#ff0000",
-												"size": "md",
-												"flex": 1
-											},
-											{
-												"type": "text",
-												"text": `${bodyTexts[2].hatu}`,
-												"wrap": true,
-												"color": "#666666",
-												"size": "sm",
-												"flex": 5
-											}
-										]
-									},
-									{
-										"type": "box",
-										"layout": "baseline",
-										"spacing": "sm",
-										"contents": [
-											{
-												"type": "text",
-												"text": "着",
-												"color": "#00ff00",
-												"size": "md",
-												"flex": 1
-											},
-											{
-												"type": "text",
-												"text": `${bodyTexts[2].tyaku}`,
-												"wrap": true,
-												"color": "#666666",
-												"size": "sm",
-												"flex": 5
-											}
-										]
-									}
-								]
-							}
-						],
-						"paddingTop": "10px"
-					}
-				),
 			]
 		},
 		"footer": {
@@ -259,6 +123,142 @@ const setTemplate = (headerText: string, bodyTexts: Array<{hatu: string, tyaku: 
 			"flex": 0
 		}
 	}
+
+	if (bodyTexts[1]) {
+		if (template.body !== undefined) {
+			template.body.contents.push({
+				"type": "separator"
+			})
+			template.body.contents.push({
+				"type": "box",
+				"layout": "vertical",
+				"contents": [
+					{
+						"type": "box",
+						"layout": "vertical",
+						"margin": "lg",
+						"spacing": "sm",
+						"contents": [
+							{
+								"type": "box",
+								"layout": "baseline",
+								"spacing": "sm",
+								"contents": [
+									{
+										"type": "text",
+										"text": "発",
+										"color": "#ff0000",
+										"size": "md",
+										"flex": 1
+									},
+									{
+										"type": "text",
+										"text": `${bodyTexts[1].hatu}`,
+										"wrap": true,
+										"color": "#666666",
+										"size": "sm",
+										"flex": 5
+									}
+								]
+							},
+							{
+								"type": "box",
+								"layout": "baseline",
+								"spacing": "sm",
+								"contents": [
+									{
+										"type": "text",
+										"text": "着",
+										"color": "#00ff00",
+										"size": "md",
+										"flex": 1
+									},
+									{
+										"type": "text",
+										"text": `${bodyTexts[1].tyaku}`,
+										"wrap": true,
+										"color": "#666666",
+										"size": "sm",
+										"flex": 5
+									}
+								]
+							}
+						]
+					}
+				],
+				"paddingTop": "10px",
+				"paddingBottom": "10px",
+			})
+		}
+	}
+	if (bodyTexts[2]) {
+		if (template.body !== undefined) {
+			template.body.contents.push({
+				"type": "separator"
+			})
+			template.body.contents.push({
+				"type": "box",
+				"layout": "vertical",
+				"contents": [
+					{
+						"type": "box",
+						"layout": "vertical",
+						"margin": "lg",
+						"spacing": "sm",
+						"contents": [
+							{
+								"type": "box",
+								"layout": "baseline",
+								"spacing": "sm",
+								"contents": [
+									{
+										"type": "text",
+										"text": "発",
+										"color": "#ff0000",
+										"size": "md",
+										"flex": 1
+									},
+									{
+										"type": "text",
+										"text": `${bodyTexts[2].hatu}`,
+										"wrap": true,
+										"color": "#666666",
+										"size": "sm",
+										"flex": 5
+									}
+								]
+							},
+							{
+								"type": "box",
+								"layout": "baseline",
+								"spacing": "sm",
+								"contents": [
+									{
+										"type": "text",
+										"text": "着",
+										"color": "#00ff00",
+										"size": "md",
+										"flex": 1
+									},
+									{
+										"type": "text",
+										"text": `${bodyTexts[2].tyaku}`,
+										"wrap": true,
+										"color": "#666666",
+										"size": "sm",
+										"flex": 5
+									}
+								]
+							}
+						]
+					}
+				],
+				"paddingTop": "10px"
+			})
+		}
+	}
+
+	return template
 }
 
 const createHeaderText = (arr: Array<string>): string => {
@@ -299,6 +299,7 @@ export const getDepartureTimes = async (): Promise<any> => {
 	}
 
 	const url = setUrl(parameter)
+	console.log(url)
 	const {data} = await axios.get(url)
 	const $ = cheerio.load(data)
 	//@ts-ignore

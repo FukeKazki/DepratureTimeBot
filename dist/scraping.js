@@ -7,7 +7,7 @@ const moment_1 = __importDefault(require("moment"));
 const cheerio_1 = __importDefault(require("cheerio"));
 const axios_1 = __importDefault(require("axios"));
 const setTemplate = (headerText, bodyTexts, parameter, url) => {
-    return {
+    const template = {
         "type": "bubble",
         "header": {
             "type": "box",
@@ -90,131 +90,6 @@ const setTemplate = (headerText, bodyTexts, parameter, url) => {
                     ],
                     "paddingBottom": "10px"
                 },
-                bodyTexts[1] && ({
-                    "type": "separator"
-                }),
-                bodyTexts[1] && ({
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "box",
-                            "layout": "vertical",
-                            "margin": "lg",
-                            "spacing": "sm",
-                            "contents": [
-                                {
-                                    "type": "box",
-                                    "layout": "baseline",
-                                    "spacing": "sm",
-                                    "contents": [
-                                        {
-                                            "type": "text",
-                                            "text": "発",
-                                            "color": "#ff0000",
-                                            "size": "md",
-                                            "flex": 1
-                                        },
-                                        {
-                                            "type": "text",
-                                            "text": `${bodyTexts[1].hatu}`,
-                                            "wrap": true,
-                                            "color": "#666666",
-                                            "size": "sm",
-                                            "flex": 5
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "box",
-                                    "layout": "baseline",
-                                    "spacing": "sm",
-                                    "contents": [
-                                        {
-                                            "type": "text",
-                                            "text": "着",
-                                            "color": "#00ff00",
-                                            "size": "md",
-                                            "flex": 1
-                                        },
-                                        {
-                                            "type": "text",
-                                            "text": `${bodyTexts[1].tyaku}`,
-                                            "wrap": true,
-                                            "color": "#666666",
-                                            "size": "sm",
-                                            "flex": 5
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
-                    "paddingTop": "10px",
-                    "paddingBottom": "10px",
-                }),
-                bodyTexts[2] && ({
-                    "type": "separator"
-                }),
-                bodyTexts[2] && ({
-                    "type": "box",
-                    "layout": "vertical",
-                    "contents": [
-                        {
-                            "type": "box",
-                            "layout": "vertical",
-                            "margin": "lg",
-                            "spacing": "sm",
-                            "contents": [
-                                {
-                                    "type": "box",
-                                    "layout": "baseline",
-                                    "spacing": "sm",
-                                    "contents": [
-                                        {
-                                            "type": "text",
-                                            "text": "発",
-                                            "color": "#ff0000",
-                                            "size": "md",
-                                            "flex": 1
-                                        },
-                                        {
-                                            "type": "text",
-                                            "text": `${bodyTexts[2].hatu}`,
-                                            "wrap": true,
-                                            "color": "#666666",
-                                            "size": "sm",
-                                            "flex": 5
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "box",
-                                    "layout": "baseline",
-                                    "spacing": "sm",
-                                    "contents": [
-                                        {
-                                            "type": "text",
-                                            "text": "着",
-                                            "color": "#00ff00",
-                                            "size": "md",
-                                            "flex": 1
-                                        },
-                                        {
-                                            "type": "text",
-                                            "text": `${bodyTexts[2].tyaku}`,
-                                            "wrap": true,
-                                            "color": "#666666",
-                                            "size": "sm",
-                                            "flex": 5
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ],
-                    "paddingTop": "10px"
-                }),
             ]
         },
         "footer": {
@@ -239,6 +114,265 @@ const setTemplate = (headerText, bodyTexts, parameter, url) => {
             "flex": 0
         }
     };
+    if (bodyTexts[1]) {
+        if (template.body !== undefined) {
+            template.body.contents.push({
+                "type": "separator"
+            });
+            template.body.contents.push({
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "margin": "lg",
+                        "spacing": "sm",
+                        "contents": [
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "発",
+                                        "color": "#ff0000",
+                                        "size": "md",
+                                        "flex": 1
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": `${bodyTexts[1].hatu}`,
+                                        "wrap": true,
+                                        "color": "#666666",
+                                        "size": "sm",
+                                        "flex": 5
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "着",
+                                        "color": "#00ff00",
+                                        "size": "md",
+                                        "flex": 1
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": `${bodyTexts[1].tyaku}`,
+                                        "wrap": true,
+                                        "color": "#666666",
+                                        "size": "sm",
+                                        "flex": 5
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "paddingTop": "10px",
+                "paddingBottom": "10px",
+            });
+            // Object.assign(template.body.contents, {
+            // 	"type": "separator"
+            // })
+            // Object.assign(template.body.contents, {
+            // 	"type": "box",
+            // 	"layout": "vertical",
+            // 	"contents": [
+            // 		{
+            // 			"type": "box",
+            // 			"layout": "vertical",
+            // 			"margin": "lg",
+            // 			"spacing": "sm",
+            // 			"contents": [
+            // 				{
+            // 					"type": "box",
+            // 					"layout": "baseline",
+            // 					"spacing": "sm",
+            // 					"contents": [
+            // 						{
+            // 							"type": "text",
+            // 							"text": "発",
+            // 							"color": "#ff0000",
+            // 							"size": "md",
+            // 							"flex": 1
+            // 						},
+            // 						{
+            // 							"type": "text",
+            // 							"text": `${bodyTexts[1].hatu}`,
+            // 							"wrap": true,
+            // 							"color": "#666666",
+            // 							"size": "sm",
+            // 							"flex": 5
+            // 						}
+            // 					]
+            // 				},
+            // 				{
+            // 					"type": "box",
+            // 					"layout": "baseline",
+            // 					"spacing": "sm",
+            // 					"contents": [
+            // 						{
+            // 							"type": "text",
+            // 							"text": "着",
+            // 							"color": "#00ff00",
+            // 							"size": "md",
+            // 							"flex": 1
+            // 						},
+            // 						{
+            // 							"type": "text",
+            // 							"text": `${bodyTexts[1].tyaku}`,
+            // 							"wrap": true,
+            // 							"color": "#666666",
+            // 							"size": "sm",
+            // 							"flex": 5
+            // 						}
+            // 					]
+            // 				}
+            // 			]
+            // 		}
+            // 	],
+            // 	"paddingTop": "10px",
+            // 	"paddingBottom": "10px",
+            // })
+        }
+    }
+    if (bodyTexts[2]) {
+        if (template.body !== undefined) {
+            template.body.contents.push({
+                "type": "separator"
+            });
+            template.body.contents.push({
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                    {
+                        "type": "box",
+                        "layout": "vertical",
+                        "margin": "lg",
+                        "spacing": "sm",
+                        "contents": [
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "発",
+                                        "color": "#ff0000",
+                                        "size": "md",
+                                        "flex": 1
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": `${bodyTexts[2].hatu}`,
+                                        "wrap": true,
+                                        "color": "#666666",
+                                        "size": "sm",
+                                        "flex": 5
+                                    }
+                                ]
+                            },
+                            {
+                                "type": "box",
+                                "layout": "baseline",
+                                "spacing": "sm",
+                                "contents": [
+                                    {
+                                        "type": "text",
+                                        "text": "着",
+                                        "color": "#00ff00",
+                                        "size": "md",
+                                        "flex": 1
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": `${bodyTexts[2].tyaku}`,
+                                        "wrap": true,
+                                        "color": "#666666",
+                                        "size": "sm",
+                                        "flex": 5
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "paddingTop": "10px"
+            });
+            // Object.assign(template.body.contents, {
+            // 	"type": "separator"
+            // })
+            // Object.assign(template.body.contents, {
+            // 	"type": "box",
+            // 	"layout": "vertical",
+            // 	"contents": [
+            // 		{
+            // 			"type": "box",
+            // 			"layout": "vertical",
+            // 			"margin": "lg",
+            // 			"spacing": "sm",
+            // 			"contents": [
+            // 				{
+            // 					"type": "box",
+            // 					"layout": "baseline",
+            // 					"spacing": "sm",
+            // 					"contents": [
+            // 						{
+            // 							"type": "text",
+            // 							"text": "発",
+            // 							"color": "#ff0000",
+            // 							"size": "md",
+            // 							"flex": 1
+            // 						},
+            // 						{
+            // 							"type": "text",
+            // 							"text": `${bodyTexts[2].hatu}`,
+            // 							"wrap": true,
+            // 							"color": "#666666",
+            // 							"size": "sm",
+            // 							"flex": 5
+            // 						}
+            // 					]
+            // 				},
+            // 				{
+            // 					"type": "box",
+            // 					"layout": "baseline",
+            // 					"spacing": "sm",
+            // 					"contents": [
+            // 						{
+            // 							"type": "text",
+            // 							"text": "着",
+            // 							"color": "#00ff00",
+            // 							"size": "md",
+            // 							"flex": 1
+            // 						},
+            // 						{
+            // 							"type": "text",
+            // 							"text": `${bodyTexts[2].tyaku}`,
+            // 							"wrap": true,
+            // 							"color": "#666666",
+            // 							"size": "sm",
+            // 							"flex": 5
+            // 						}
+            // 					]
+            // 				}
+            // 			]
+            // 		}
+            // 	],
+            // 	"paddingTop": "10px"
+            // })
+        }
+    }
+    return template;
 };
 const createHeaderText = (arr) => {
     return `${arr[0]}:${arr[1]} → ${arr[2]}:${arr[3]}`;
@@ -275,6 +409,7 @@ exports.getDepartureTimes = async () => {
         m1: moment_1.default().minute().toString().padStart(2, '0')[0],
     };
     const url = setUrl(parameter);
+    console.log(url);
     const { data } = await axios_1.default.get(url);
     const $ = cheerio_1.default.load(data);
     //@ts-ignore
