@@ -7,17 +7,19 @@ import {
 } from '@line/bot-sdk'
 import crypto from 'crypto'
 import dotenv from 'dotenv'
-import {getDepartureTimes} from './scraping'
+
+import {fetchDepartureTimes} from './scraping'
+import {createHeaderText, createBodyTexts, createMessage} from "./message"
+
 
 dotenv.config()
-
-const app = express()
 
 const config: MiddlewareConfig & ClientConfig = {
 	channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN as string,
 	channelSecret: process.env.CHANNEL_SECRET as string,
 }
 
+const app = express()
 const client = new Client(config)
 const PORT = process.env.PORT || 3000
 
@@ -32,21 +34,27 @@ app.post('/webhook', middleware(config), async (req, res) => {
 	// main
 	const event = req.body.events[0]
 	const message = event.message.text
-	console.log(event)
+	// 絞る
 	if (message !== '発') return undefined
-	const replyToken = event.replyToken
-	const replyText = await getDepartureTimes()
-	console.log(replyText)
 
-	await reply(replyToken, replyText)
+	const replyToken = event.replyToken
+
+	try {
+		const {departureTimes, parameter, url} = await fetchDepartureTimes()
+
+		const headerText = createHeaderText(departureTimes[0])
+		const bodyTexts = createBodyTexts(departureTimes)
+		const replyMessage = createMessage(headerText, bodyTexts, parameter, url)
+
+		await replyFlexMessage(replyToken, replyMessage)
+	} catch (error) {
+		console.error(`${error}`)
+		// Todo: 失敗したことを知らせるリプライ
+	}
 })
 
-const reply = async (token: string, message: any) => {
+const replyFlexMessage = async (token: string, message: any): Promise<void> => {
 	try {
-		// const result = await client.replyMessage(token, {
-		// 	type: 'text',
-		// 	text: text
-		// })
 		const result = await client.replyMessage(token, {
 			type: 'flex',
 			altText: 'This is a Flex Message',
