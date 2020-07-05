@@ -8,12 +8,13 @@ const bot_sdk_1 = require("@line/bot-sdk");
 const crypto_1 = __importDefault(require("crypto"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const scraping_1 = require("./scraping");
+const message_1 = require("./message");
 dotenv_1.default.config();
-const app = express_1.default();
 const config = {
     channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
     channelSecret: process.env.CHANNEL_SECRET,
 };
+const app = express_1.default();
 const client = new bot_sdk_1.Client(config);
 const PORT = process.env.PORT || 3000;
 app.get('/', (req, res) => {
@@ -26,20 +27,24 @@ app.post('/webhook', bot_sdk_1.middleware(config), async (req, res) => {
     // main
     const event = req.body.events[0];
     const message = event.message.text;
-    console.log(event);
+    // 絞る
     if (message !== '発')
         return undefined;
     const replyToken = event.replyToken;
-    const replyText = await scraping_1.getDepartureTimes();
-    console.log(replyText);
-    await reply(replyToken, replyText);
-});
-const reply = async (token, message) => {
     try {
-        // const result = await client.replyMessage(token, {
-        // 	type: 'text',
-        // 	text: text
-        // })
+        const { departureTimes, parameter, url } = await scraping_1.fetchDepartureTimes();
+        const headerText = message_1.createHeaderText(departureTimes[0]);
+        const bodyTexts = message_1.createBodyTexts(departureTimes);
+        const replyMessage = message_1.createMessage(headerText, bodyTexts, parameter, url);
+        await replyFlexMessage(replyToken, replyMessage);
+    }
+    catch (error) {
+        console.error(`${error}`);
+        // Todo: 失敗したことを知らせるリプライ
+    }
+});
+const replyFlexMessage = async (token, message) => {
+    try {
         const result = await client.replyMessage(token, {
             type: 'flex',
             altText: 'This is a Flex Message',
